@@ -2,7 +2,7 @@
 
 Intelligent Telegram bot built with n8n workflow automation, featuring OpenAI LLM integration for context-aware conversations.
 
-![Workflow Screenshot](workflow-screenshot.png)
+![Workflow Screenshot]([workflow-screenshot.png](https://github.com/Chi-Automates/telegram-ai-bot-automation/blob/main/27003a46-366b-461a-b131-30c731ece6c1.jpeg))
 
 ## Features
 - Real-time message processing
