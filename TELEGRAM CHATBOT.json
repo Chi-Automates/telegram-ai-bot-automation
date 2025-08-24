@@ -1,0 +1,150 @@
+{
+  "name": "TELEGRAM CHATBOT",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1056,
+        -144
+      ],
+      "id": "6d67455c-ca0f-4a06-b373-4a3f238180e6",
+      "name": "Telegram Trigger",
+      "webhookId": "aa0b2250-9f66-4e42-b067-f998a55f0c58",
+      "credentials": {
+        "telegramApi": {
+          "id": "0ZyWGKbR4qiUclhW",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a helpful Telegram bot assistant. Rules:\n-  NO reasoning, NO meta-commentary  \n- Be friendly and natural\n- give contextual explanation only\n-Be warm and receptive\n-Do not be brief in your explanation\n-do not be bogus either\n\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -864,
+        -144
+      ],
+      "id": "e3a988b8-e25c-48ea-a599-30e6ea98d976",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "google/gemma-2-9b-it:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        16
+      ],
+      "id": "70273621-c54e-40ca-a990-350aad6c4d8c",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "oyMIM7aRlwVVRd5i",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        -144
+      ],
+      "id": "c2b9db57-907f-465f-aa26-980b416eaea6",
+      "name": "Send a text message",
+      "webhookId": "1a709425-bad8-4df4-ab34-fd5e17564f32",
+      "credentials": {
+        "telegramApi": {
+          "id": "0ZyWGKbR4qiUclhW",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cbd2add6-262f-4146-9658-2fc3cb8e7c3c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64f9fc5904a7e73df9bbc95bfcc5453b2eb48deb171986a54d3ca78497b08af1"
+  },
+  "id": "JUZwmF0srEVMwrf7",
+  "tags": []
+}
